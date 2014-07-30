@@ -319,6 +319,14 @@ CCPoint CCUtils::getPoint(CCNode* node, float xpercent, float ypercent) {
 	return ccp(origin.x + size.width * xpercent, origin.y + size.height * ypercent);
 }
 
+#define CCVECTOR_FOREACH(__array__, __object__)                             \
+if ((__array__).size() > 0)                                             \
+for(auto __arr__ = (__array__).begin(), __end__ = (__array__).end();    \
+__arr__ < __end__ && (((__object__) = *__arr__) != NULL);              \
+__arr__++)																\
+if (((__object__) = *__arr__) != NULL)
+
+
 void CCUtils::setTreeOpacity(CCNode* n, int o) {
 	// self
 	CCRGBAProtocol* p = dynamic_cast<CCRGBAProtocol*>(n);

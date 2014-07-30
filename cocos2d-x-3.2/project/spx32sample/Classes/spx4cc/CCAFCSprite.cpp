@@ -113,8 +113,43 @@ void CCAFCSprite::initSpriteFromAnimationData() {
 	}
 }
 
+#define CCVECTOR_FOREACH(__array__, __object__)                                 \
+    if ((__array__).size() > 0)                                                 \
+        for(auto __arr__ = (__array__).begin(), __end__ = (__array__).end();    \
+            __arr__ < __end__ && (((__object__) = *__arr__) != NULL);           \
+            __arr__++)															\
+            if (((__object__) = *__arr__) != NULL)
+
+
+#define vectorMakeObjectsPerformSelector(pArray, func, elementType)       \
+    do {                                                                  \
+                CCLOG("pArray.size()=%d", pArray.size());   \
+        if(pArray.size() > 0)                                             \
+        {                                                                 \
+                CCLOG("pArray.size() > 0");   \
+            auto child = *pArray.begin();                                 \
+            CCVECTOR_FOREACH(pArray, child)                               \
+            {                                                             \
+                CCLOG("CCVECTOR_FOREACH");   \
+                elementType pNode = static_cast<elementType>(child);      \
+                if(pNode)                                                 \
+                {                                                         \
+                CCLOG("pNode->func");   \
+                    pNode->func();                                        \
+                }                                                         \
+            }                                                             \
+        }                                                                 \
+    }                                                                     \
+    while(false)
+
+// cocos2d-x 2.2
 //void CCAFCSprite::draw() {
-void CCAFCSprite::draw(Renderer *renderer, const Mat4& transform, uint32_t flags) {
+
+// cocos2d-x 3.2
+// void CCAFCSprite::draw(Renderer *renderer, const Mat4& transform, uint32_t flags) {
+
+// cocos2d-x 3.1.1
+void CCAFCSprite::draw(Renderer *renderer, const Mat4& transform, bool transformUpdated) {
     CC_PROFILER_START_CATEGORY(kCCProfilerCategorySprite, "CCAFCSprite - draw");
     
     CC_NODE_DRAW_SETUP();
@@ -135,6 +170,7 @@ void CCAFCSprite::draw(Renderer *renderer, const Mat4& transform, uint32_t flags
     
     // update children transform
     for(SpriteBatchNodePtrList::iterator iter = m_sheetList.begin(); iter != m_sheetList.end(); iter++) {
+        CCLOG("pArray.size()=%d", (*iter)->getChildren().size());
         vectorMakeObjectsPerformSelector((*iter)->getChildren(), updateTransform, Sprite*);
     }
     

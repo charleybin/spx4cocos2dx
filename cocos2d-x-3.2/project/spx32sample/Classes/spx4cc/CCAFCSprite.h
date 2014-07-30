@@ -219,8 +219,14 @@ public:
 	virtual void addChild(CCNode* child, int z, int tag);
     
     /// @see CCNode::draw
+    // cocos2d-x 2.2
     //virtual void draw();
-	virtual void draw(Renderer *renderer, const Mat4& transform, uint32_t flags);
+    
+    // cocos2d-x 3.2
+	//virtual void draw(Renderer *renderer, const Mat4& transform, uint32_t flags);
+    
+    // cocos2d-x 3.1.1
+    virtual void draw(Renderer *renderer, const Mat4& transform, bool transformUpdated);
     
     /// @see CCRGBAProtocol::setColor
     virtual void setColor(const ccColor3B& color);
